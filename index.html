@@ -52,7 +52,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -63,12 +63,86 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-BFS 算法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/05/BFS 算法/" class="article-date">
+  <time datetime="2018-08-05T03:03:33.120Z" itemprop="datePublished">2018-08-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/05/BFS 算法/">BFS算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Breadth-first-search(BFS)是遍历图的一个一般技术，BFS遍历图G，可以</p>
+<blockquote>
+<ul>
+<li>访问G的所有边和顶点</li>
+<li>确定G是否连通</li>
+<li>计算G的所有连通分支</li>
+<li>计算G的生成森林</li>
+</ul>
+</blockquote>
+<p>BFS遍历具有n个顶点和m条边的图G的时间复杂性为O(n+m)</p>
+<p>BFS可以扩展解决其他图论问题</p>
+<blockquote>
+<ul>
+<li>找到两个顶点之间具有最少边数的路径（若所有边权值相同即为两点间最短路径）</li>
+<li>找到图中的简单环，如果存在的话</li>
+</ul>
+</blockquote>
+<h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p><img src="\images\BFS\01.png" alt=""></p>
+<p>白色：未访问顶点        灰色：待访问顶点        黑色：已访问顶点</p>
+<p>从顶点v0开始访问</p>
+<p><img src="\images\BFS\02.png" alt=""></p>
+<p>v0已访问，从v0处可以访问v1,v2</p>
+<p><img src="\images\BFS\03.png" alt=""></p>
+<p>v1,v2已访问，从v1处可以访问v0,v2,v3,v5，从v2处可以访问v0,v1,v3,   v0,v1,v2已访问，访问v3,v5</p>
+<p><img src="\images\BFS\04.png" alt=""></p>
+<p>从v3,v5 处访问v4,v6</p>
+<p><img src="\images\BFS\05.png" alt=""></p>
+<p>全部访问，终止</p>
+<h2 id="算法（C-）"><a href="#算法（C-）" class="headerlink" title="算法（C++）"></a>算法（C++）</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Graph</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">vector</span>&lt; <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt; Edge;</span><br><span class="line">    <span class="built_in">vector</span>&lt; <span class="keyword">bool</span> &gt; visited; </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    Graph(<span class="keyword">int</span> V)</span><br><span class="line">    &#123;</span><br><span class="line">        Edge.resize(V);</span><br><span class="line">        visited.resize(V);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add_edge</span><span class="params">(<span class="keyword">int</span> v,<span class="keyword">int</span> w)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Edge[v].push_back(w);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">BFS</span><span class="params">(<span class="keyword">int</span> s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; visited.size(); i++) visited[i] = <span class="literal">false</span>;</span><br><span class="line">        <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">        visited[s] = <span class="literal">true</span>;</span><br><span class="line">        q.push_back(s);</span><br><span class="line">        <span class="keyword">while</span> (!q.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            s = q.front();</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;s&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">            q.pop_front();</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; k = Edge[s];</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k.size(); i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(!visited[k[i]])</span><br><span class="line">                &#123;</span><br><span class="line">                    visited[k[i]] = <span class="literal">true</span>;</span><br><span class="line">                    q.push_back(k[i]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">Graph <span class="title">g</span><span class="params">(<span class="number">6</span>)</span></span>;</span><br><span class="line">    g.add_edge(<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">    g.add_edge(<span class="number">0</span>,<span class="number">2</span>);</span><br><span class="line">    g.add_edge(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">    g.add_edge(<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">    g.add_edge(<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line">    g.add_edge(<span class="number">3</span>,<span class="number">3</span>);</span><br><span class="line">    <span class="keyword">int</span> v;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Enter vertex from where to perform BFS"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;v;</span><br><span class="line">    g.BFS(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/05/BFS 算法/" data-id="cjkgbs2lp00009surncle17fv" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图/">图</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-java文件读写" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/06/23/java文件读写/" class="article-date">
   <time datetime="2018-06-23T15:35:12.596Z" itemprop="datePublished">2018-06-23</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -119,10 +193,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/23/java文件读写/" data-id="cjirkg9cj00001our2famgo9k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/23/java文件读写/" data-id="cjirkgtih0001t4urkq1m62cr" class="article-share-link">Teilen</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IO-stream/">IO stream</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IO/">IO</a></li></ul>
 
     </footer>
   </div>
@@ -137,6 +211,10 @@
   <time datetime="2018-06-23T09:33:12.387Z" itemprop="datePublished">2018-06-23</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -184,10 +262,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/23/多线程/" data-id="cjir7m0o30001jkurvzg2rpe8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/23/多线程/" data-id="cjirkgtim0003t4ur7uo8erd1" class="article-share-link">Teilen</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程-线程安全/">多线程 线程安全</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
 
     </footer>
   </div>
@@ -202,6 +280,10 @@
   <time datetime="2018-06-21T00:13:48.061Z" itemprop="datePublished">2018-06-21</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -255,10 +337,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/21/equals()和hashCode()/" data-id="cjir7m0nt0000jkursrsy2pzv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/21/equals()和hashCode()/" data-id="cjirkgtia0000t4ur9eovpt8i" class="article-share-link">Teilen</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/equals-hashCode/">equals() hashCode()</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/equals/">equals()</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hashCode/">hashCode()</a></li></ul>
 
     </footer>
   </div>
@@ -274,13 +356,20 @@
           <aside id="sidebar">
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li></ul>
+    </div>
+  </div>
+
 
   
     
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO-stream/">IO stream</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/equals-hashCode/">equals() hashCode()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程-线程安全/">多线程 线程安全</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/equals/">equals()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hashCode/">hashCode()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图/">图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
     </div>
   </div>
 
@@ -290,16 +379,16 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/IO-stream/" style="font-size: 10px;">IO stream</a> <a href="/tags/equals-hashCode/" style="font-size: 10px;">equals() hashCode()</a> <a href="/tags/多线程-线程安全/" style="font-size: 10px;">多线程 线程安全</a>
+      <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/equals/" style="font-size: 10px;">equals()</a> <a href="/tags/hashCode/" style="font-size: 10px;">hashCode()</a> <a href="/tags/图/" style="font-size: 10px;">图</a> <a href="/tags/多线程/" style="font-size: 10px;">多线程</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
     </div>
   </div>
 
@@ -307,9 +396,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/08/05/BFS 算法/">BFS算法</a>
+          </li>
         
           <li>
             <a href="/2018/06/23/java文件读写/">java 文件读写</a>
